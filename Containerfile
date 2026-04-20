@@ -1,16 +1,16 @@
 FROM oven/bun:alpine AS builder
 RUN apk add --no-cache git
 WORKDIR /app
-COPY worker/package.json worker/bun.lock* ./
+COPY package.json bun.lock* ./
 RUN bun install
-COPY worker/src/ src/
-COPY worker/tsconfig.json ./
+COPY src/ src/
+COPY tsconfig.json ./
 RUN bun build --compile src/main.ts --outfile worker
 
 FROM docker.io/library/debian:trixie-slim
 WORKDIR /app
 COPY --from=builder /app/worker /app/worker
-COPY worker/entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /app/worker /entrypoint.sh
 RUN apt-get update && apt-get install -y --no-install-recommends bash && rm -rf /var/lib/apt/lists/*
 ENV PORT=25001
