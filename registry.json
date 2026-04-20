@@ -1,0 +1,1 @@
+{"flakes": [{"exact": true, "from": {"id": "nixpkgs", "type": "indirect"}, "to": {"lastModified": 1776434932, "narHash": "sha256-gyqXNMgk3sh+ogY5svd2eNLJ6oEwzbAeaoBrrxD0lKk=", "path": "/nix/store/x6syzklc01b6hqdbf4dgs2ilg4gs21qh-source", "rev": "c7f47036d3df2add644c46d712d14262b7d86c0c", "type": "path"}}], "version": 2}
