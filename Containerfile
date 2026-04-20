@@ -7,15 +7,13 @@ COPY src/ src/
 COPY tsconfig.json ./
 RUN bun build --compile src/main.ts --outfile worker
 
-FROM docker.io/library/debian:trixie-slim
+FROM docker.io/library/alpine:latest
+RUN apk add --no-cache ca-certificates libstdc++ bash
 WORKDIR /app
 COPY --from=builder /app/worker /app/worker
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /app/worker /entrypoint.sh
-RUN apt-get update && apt-get install -y --no-install-recommends bash && rm -rf /var/lib/apt/lists/*
+RUN chmod +x /app/worker
 ENV PORT=25001
 ENV WORKSPACE_ROOT=/data/workspace
 ENV NIX_PKGS=[]
 EXPOSE 25001
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["./worker"]
+ENTRYPOINT ["/app/worker"]
